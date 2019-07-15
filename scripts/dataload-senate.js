@@ -8,13 +8,13 @@ function createTable (senateData) {
         
         let tr = document.createElement("tr");
 
-        let name = document.createElement("td");
-        name = senateData[i].first_name;
+        let fullName = document.createElement("td");
+        let name = senateData[i].first_name;
         if (senateData[i].middle_name != null) {
             name = name + " " + senateData[i].middle_name;
         }
         name = name + " " + senateData[i].last_name;
-        name.textContent = name;
+        fullName.textContent = name;
 
         let party = document.createElement("td");
         party.textContent = senateData[i].party;

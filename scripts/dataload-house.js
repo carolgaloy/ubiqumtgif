@@ -1,20 +1,20 @@
 let members = data.results[0].members;
 
-function createTable (houseData) {
+function createTable(houseData) {
 
     let housedata = document.getElementById("house-data");
 
     for (let i = 0; i < houseData.length; i++) {
-        
+
         let tr = document.createElement("tr");
 
-        let name = document.createElement("td");
-        name = houseData[i].first_name;
+        let fullName = document.createElement("td");
+        let name = houseData[i].first_name;
         if (houseData[i].middle_name != null) {
             name = name + " " + houseData[i].middle_name;
         }
         name = name + " " + houseData[i].last_name;
-        name.textContent = name;
+        fullName.textContent = name;
 
         let party = document.createElement("td");
         party.textContent = houseData[i].party;
@@ -30,7 +30,7 @@ function createTable (houseData) {
 
         tr.append(name, party, state, yearsInOffice, votes);
         housedata.appendChild(tr);
-        
+
     }
 }
 
