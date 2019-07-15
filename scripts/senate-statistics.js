@@ -2,78 +2,103 @@ let members = data.results[0].members;
 
 let statistics = {
     democrats: {
-        numberOfDemocrats: 0,
-        democratVotes: 0
+        members: 0,
+        votes: 0
     },
     republicans: {
-        numberOfRepublicans: 0,
-        republicanVotes: 0
+        members: 0,
+        votes: 0
     },
     independents: {
-        numberOfIndependents: 0,
-        independentVotes: 0
+        members: 0,
+        votes: 0
     },
     total: {
-        totalMembers: 0,
-        totalVotes: 0
+        members: 0,
+        votes: 0
     }
 };
 
 calculateStatistics(members);
-fillTable();
+atAGlance();
+attendance();
 
 function calculateStatistics(senateData) {
 
     senateData.forEach(senator => {
 
         if (senator.party == 'R') {
-            statistics.republicans.numberOfRepublicans++;
-            statistics.republicans.republicanVotes += senator.votes_with_party_pct;
+            statistics.republicans.members++;
+            statistics.republicans.votes += senator.votes_with_party_pct;
         } else if (senator.party == 'D') {
-            statistics.democrats.numberOfDemocrats++;
-            statistics.democrats.democratVotes += senator.votes_with_party_pct;
+            statistics.democrats.members++;
+            statistics.democrats.votes += senator.votes_with_party_pct;
         } else if (senator.party == 'I') {
-            statistics.independents.numberOfIndependents++;
-            statistics.independents.independentVotes += senator.votes_with_party_pct;
+            statistics.independents.members++;
+            statistics.independents.votes += senator.votes_with_party_pct;
         }
 
-        statistics.total.totalMembers++;
-        statistics.total.totalVotes += senator.votes_with_party_pct;
+        statistics.total.members++;
+        statistics.total.votes += senator.votes_with_party_pct;
     })
 
-    //statistics.total.totalMembers = statistics.numberOfDemocrats + statistics.numberOfIndependents + statistics.numberOfRepublicans;
-    statistics.republicans.republicanVotes /= statistics.republicans.numberOfRepublicans.toFixed(2);
-    statistics.democrats.democratVotes /= statistics.democrats.numberOfDemocrats.toFixed(2);
-    statistics.independents.independentVotes /= statistics.independents.numberOfIndependents.toFixed(2);
-    statistics.total.totalVotes /= statistics.total.totalMembers.toFixed(2);
-
+    statistics.republicans.votes /= statistics.republicans.members;
+    statistics.democrats.votes /= statistics.democrats.members;
+    statistics.independents.votes /= statistics.independents.members;
+    statistics.total.votes /= statistics.total.members;
 }
 
-function fillTable() {
+function atAGlance() {
 
     let senateStatistics = document.getElementById('senate-statistics');
+    let statisticsTable = '';
 
-    for (let key in statistics) {
-        let row = document.createElement("tr");
-        console.log(key);
-    }
+    for (let party in statistics) {
+    
+        let partyCap = party.charAt(0).toUpperCase() + party.slice(1);
 
-    template = '';
-
-    for (let i = 0; i < 4; i++) {
-
-        template += `
+        statisticsTable += `
         <tr>
-        <td>${statistics.numberOfDemocrats}</td>
-        <td>${statistics.numberOfIndependents}</td>
-        <td>${statistics.numberOfRepublicans}</td>
-        <td>${statistics.total}</td>
-        <td>${statistics.republicanVotes}</td>
-        <td>${statistics.democratVotes}</td>
-        <td>${statistics.independentVotes}</td>
+        <td>${partyCap}</td>
+        <td>${statistics[party].members}</td>
+        <td>${statistics[party].votes.toFixed(2)} %</td>
         </tr>`
     }
 
-    senateStatistics.innerHTML = template;
+    senateStatistics.innerHTML = statisticsTable;
+}
 
+function attendance() {
+
+    let orderedMembers = members.sort(function (a,b){return (a.missed_votes_pct - b.missed_votes_pct)});    
+    let tenPercent = Math.round(members.length / 10);
+
+    let mostEngaged = document.getElementById('senate-most-engaged');
+    let leastEngaged = document.getElementById('senate-least-engaged');
+
+    let mostEngagedTable = '';
+    let leastEngagedTable = '';
+    
+    for (let i = 0; i < tenPercent; i++) {
+
+        mostEngagedTable += `
+        <tr>
+        <td>${orderedMembers[i].first_name}</td>
+        <td>${orderedMembers[i].missed_votes}</td>
+        <td>${orderedMembers[i].missed_votes_pct} %</td>
+        </tr>`        
+    }
+
+    for (let i = orderedMembers.length-1; i > orderedMembers.length-1-tenPercent; i--) {
+        
+        leastEngagedTable += `
+        <tr>
+        <td>${orderedMembers[i].first_name}</td>
+        <td>${orderedMembers[i].missed_votes}</td>
+        <td>${orderedMembers[i].missed_votes_pct} %</td>
+        </tr>`
+    }
+
+    mostEngaged.innerHTML = mostEngagedTable;
+    leastEngaged.innerHTML = leastEngagedTable;
 }
