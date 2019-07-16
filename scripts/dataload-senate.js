@@ -43,8 +43,8 @@ indCheckbox.addEventListener('click', function () {
 function createTable(senateData) {
 
     let senatedata = document.getElementById('senate-data');
-
     let template = '';
+
     for (let i = 0; i < senateData.length; i++) {
 
         template += addRow(i);
@@ -57,8 +57,8 @@ function createTable(senateData) {
 function filterByParty(senateData, parties) {
 
     let senatedata = document.getElementById('senate-data');
-
     let template = '';
+
     for (let i = 0; i < senateData.length; i++) {
 
         if (parties.length == 0) {
