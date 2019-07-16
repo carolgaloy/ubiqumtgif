@@ -1,4 +1,5 @@
 let members = data.results[0].members;
+let pct = 0.1;
 
 let statistics = {
     democrats: {
@@ -87,7 +88,7 @@ function attendance() {
     let orderedMembers = members.sort(function (a, b) {
         return a.missed_votes_pct - b.missed_votes_pct;
     });
-    let tenPercent = Math.round(members.length / 10);
+    let tenPercent = Math.round(members.length * pct);
 
     let mostEngaged = document.getElementById("house-most-engaged");
     let leastEngaged = document.getElementById("house-least-engaged");
@@ -98,7 +99,7 @@ function attendance() {
     for (let i = 0; i < tenPercent; i++) {
         mostEngagedTable += `
         <tr>
-        <td>${orderedMembers[i].first_name}</td>
+        <td><a href='${orderedMembers[i].url}'>${orderedMembers[i].last_name}, ${orderedMembers[i].first_name} ${orderedMembers[i].middle_name || ''}</a></td>
         <td>${orderedMembers[i].missed_votes}</td>
         <td>${orderedMembers[i].missed_votes_pct} %</td>
         </tr>`;
@@ -109,7 +110,7 @@ function attendance() {
     ) {
         leastEngagedTable += `
         <tr>
-        <td>${orderedMembers[i].first_name}</td>
+        <td><a href='${orderedMembers[i].url}'>${orderedMembers[i].last_name}, ${orderedMembers[i].first_name} ${orderedMembers[i].middle_name || ''}</a></td>
         <td>${orderedMembers[i].missed_votes}</td>
         <td>${orderedMembers[i].missed_votes_pct} %</td>
         </tr>`;
@@ -121,7 +122,7 @@ function attendance() {
     ) {
         mostEngagedTable += `
         <tr>
-        <td>${orderedMembers[tenPercent].first_name}</td>
+        <td><a href='${orderedMembers[tenPercent].url}'>${orderedMembers[tenPercent].last_name}, ${orderedMembers[tenPercent].first_name} ${orderedMembers[tenPercent].middle_name || ''}</a></td>
         <td>${orderedMembers[tenPercent].missed_votes}</td>
         <td>${orderedMembers[tenPercent].missed_votes_pct} %</td>
         </tr>`;
@@ -138,6 +139,7 @@ function attendance() {
         <td>${
           orderedMembers[orderedMembers.length - 1 - tenPercent].first_name
         }</td>
+        <td><a href='${orderedMembers[orderedMembers.length - 1 - tenPercent].url}'>${orderedMembers[orderedMembers.length - 1 - tenPercent].last_name}, ${orderedMembers[orderedMembers.length - 1 - tenPercent].first_name} ${orderedMembers[orderedMembers.length - 1 - tenPercent].middle_name || ''}</a></td>
         <td>${
           orderedMembers[orderedMembers.length - 1 - tenPercent].missed_votes
         }</td>
@@ -159,7 +161,7 @@ function loyalty() {
     let orderedMembers = members.sort(function (a, b) {
         return a.votes_with_party_pct - b.votes_with_party_pct;
     });
-    let tenPercent = Math.round(members.length / 10);
+    let tenPercent = Math.round(members.length * pct);
 
     let mostLoyal = document.getElementById("house-most-loyal");
     let leastLoyal = document.getElementById("house-least-loyal");
@@ -170,7 +172,7 @@ function loyalty() {
     for (let i = 0; i < tenPercent; i++) {
         leastLoyalTable += `
         <tr>
-        <td>${orderedMembers[i].first_name}</td>
+        <td><a href='${orderedMembers[i].url}'>${orderedMembers[i].last_name}, ${orderedMembers[i].first_name} ${orderedMembers[i].middle_name || ''}</a></td>
         <td>${orderedMembers[i].total_votes}</td>
         <td>${orderedMembers[i].votes_with_party_pct} %</td>
         </tr>`;
@@ -181,7 +183,7 @@ function loyalty() {
     ) {
         mostLoyalTable += `
         <tr>
-        <td>${orderedMembers[i].first_name}</td>
+        <td><a href='${orderedMembers[i].url}'>${orderedMembers[i].last_name}, ${orderedMembers[i].first_name} ${orderedMembers[i].middle_name || ''}</a></td>
         <td>${orderedMembers[i].total_votes}</td>
         <td>${orderedMembers[i].votes_with_party_pct} %</td>
         </tr>`;
@@ -200,6 +202,8 @@ function loyalty() {
 
         tenPercent++;
     }
+
+    tenPercent = Math.round(members.length * pct);
 
     while (
         orderedMembers[orderedMembers.length - 1 - tenPercent].missed_votes_pct ==

@@ -1,37 +1,87 @@
 let members = data.results[0].members;
 
+createTable(members);
+
+let repCheckbox = document.getElementById('rep-checkbox');
+let demCheckbox = document.getElementById('dem-checkbox');
+let indCheckbox = document.getElementById('ind-checkbox');
+let parties = [];
+
+repCheckbox.addEventListener('click', function () {
+    if (repCheckbox.checked) {
+        parties.push('R');
+        filterByParty(members, parties);
+    } else {
+        let index = parties.indexOf('R');
+        parties.splice(index, 1);
+        filterByParty(members, parties);
+    }
+});
+
+demCheckbox.addEventListener('click', function () {
+    if (demCheckbox.checked) {
+        parties.push('D');
+        filterByParty(members, parties);
+    } else {
+        let index = parties.indexOf('D');
+        parties.splice(index, 1);
+        filterByParty(members, parties);
+    }
+});
+
+indCheckbox.addEventListener('click', function () {
+    if (indCheckbox.checked) {
+        parties.push('I');
+        filterByParty(members, parties);
+    } else {
+        let index = parties.indexOf('D');
+        parties.splice(index, 1);
+        filterByParty(members, parties);
+    }
+});
+
 function createTable(houseData) {
 
     let housedata = document.getElementById("house-data");
 
+    let template = "";
     for (let i = 0; i < houseData.length; i++) {
 
-        let tr = document.createElement("tr");
-
-        let fullName = document.createElement("td");
-        let name = houseData[i].first_name;
-        if (houseData[i].middle_name != null) {
-            name = name + " " + houseData[i].middle_name;
-        }
-        name = name + " " + houseData[i].last_name;
-        fullName.textContent = name;
-
-        let party = document.createElement("td");
-        party.textContent = houseData[i].party;
-
-        let state = document.createElement("td");
-        state.textContent = houseData[i].state;
-
-        let yearsInOffice = document.createElement("td");
-        yearsInOffice.textContent = houseData[i].seniority;
-
-        let votes = document.createElement("td");
-        votes.textContent = houseData[i].votes_with_party_pct;
-
-        tr.append(name, party, state, yearsInOffice, votes);
-        housedata.appendChild(tr);
-
+        template += addRow(i);
     }
+
+    housedata.innerHTML = template;
 }
 
-createTable(members);
+function filterByParty(houseData, parties) {
+
+    let housedata = document.getElementById('house-data');
+
+    let template = '';
+    console.log(parties);
+    for (let i = 0; i < houseData.length; i++) {
+
+        if (parties.length == 0) {
+            template += addRow(i);
+        } else if (parties.includes(members[i].party)) {
+            template += addRow(i);
+        }
+    }
+
+    housedata.innerHTML = template;
+}
+
+function addRow(i) {
+
+    let row = '';
+
+    row += `
+            <tr>
+            <td><a href='${members[i].url}'>${members[i].last_name}, ${members[i].first_name} ${members[i].middle_name || ''}</a></td>
+            <td>${members[i].party}</td>
+            <td>${members[i].state}</td>
+            <td>${members[i].seniority}</td>
+            <td>${members[i].votes_with_party_pct}</td>
+            </tr>`
+    return row;
+}
