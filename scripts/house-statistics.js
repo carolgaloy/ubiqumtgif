@@ -22,11 +22,11 @@ let statistics = {
 calculateStatistics(members);
 atAGlance();
 
-if (document.URL.indexOf("senate-attendance.html") >= 0) {
+if (document.URL.indexOf("house-attendance.html") >= 0) {
     attendance();
 }
 
-if (document.URL.indexOf("senate-loyalty.html") >= 0) {
+if (document.URL.indexOf("house-loyalty.html") >= 0) {
     loyalty();
 }
 
@@ -66,7 +66,7 @@ function calculateStatistics(senateData) {
 }
 
 function atAGlance() {
-    let senateStatistics = document.getElementById("senate-statistics");
+    let senateStatistics = document.getElementById("house-statistics");
     let statisticsTable = "";
 
     for (let party in statistics) {
@@ -89,8 +89,8 @@ function attendance() {
     });
     let tenPercent = Math.round(members.length / 10);
 
-    let mostEngaged = document.getElementById("senate-most-engaged");
-    let leastEngaged = document.getElementById("senate-least-engaged");
+    let mostEngaged = document.getElementById("house-most-engaged");
+    let leastEngaged = document.getElementById("house-least-engaged");
 
     let mostEngagedTable = "";
     let leastEngagedTable = "";
@@ -161,8 +161,8 @@ function loyalty() {
     });
     let tenPercent = Math.round(members.length / 10);
 
-    let mostLoyal = document.getElementById("senate-most-loyal");
-    let leastLoyal = document.getElementById("senate-least-loyal");
+    let mostLoyal = document.getElementById("house-most-loyal");
+    let leastLoyal = document.getElementById("house-least-loyal");
 
     let mostLoyalTable = "";
     let leastLoyalTable = "";
