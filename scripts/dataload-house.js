@@ -1,50 +1,22 @@
 let members = data.results[0].members;
 
 createTable(members);
+fillDropdown(members);
 
 let repCheckbox = document.getElementById('rep-checkbox');
 let demCheckbox = document.getElementById('dem-checkbox');
 let indCheckbox = document.getElementById('ind-checkbox');
 let parties = [];
 
-repCheckbox.addEventListener('click', function () {
-    if (repCheckbox.checked) {
-        parties.push('R');
-        filterByParty(members, parties);
-    } else {
-        let index = parties.indexOf('R');
-        parties.splice(index, 1);
-        filterByParty(members, parties);
-    }
-});
-
-demCheckbox.addEventListener('click', function () {
-    if (demCheckbox.checked) {
-        parties.push('D');
-        filterByParty(members, parties);
-    } else {
-        let index = parties.indexOf('D');
-        parties.splice(index, 1);
-        filterByParty(members, parties);
-    }
-});
-
-indCheckbox.addEventListener('click', function () {
-    if (indCheckbox.checked) {
-        parties.push('I');
-        filterByParty(members, parties);
-    } else {
-        let index = parties.indexOf('D');
-        parties.splice(index, 1);
-        filterByParty(members, parties);
-    }
-});
+repCheckbox.addEventListener('click', filterByParty);
+demCheckbox.addEventListener('click', filterByParty);
+indCheckbox.addEventListener('click', filterByParty);
 
 function createTable(houseData) {
 
     let housedata = document.getElementById("house-data");
-
     let template = "";
+
     for (let i = 0; i < houseData.length; i++) {
 
         template += addRow(i);
@@ -53,21 +25,30 @@ function createTable(houseData) {
     housedata.innerHTML = template;
 }
 
-function filterByParty(houseData, parties) {
+function filterByParty() {
 
-    let housedata = document.getElementById('house-data');
+    let houseData = document.getElementById('house-data');
     let template = '';
+    let parties = [];
 
-    for (let i = 0; i < houseData.length; i++) {
+    if (repCheckbox.checked) {
+        parties.push('R');
+    }
+    if (demCheckbox.checked) {
+        parties.push('D');
+    }
+    if (indCheckbox.checked) {
+        parties.push('I');
+    }
 
-        if (parties.length == 0) {
-            template += addRow(i);
-        } else if (parties.includes(members[i].party)) {
+    for (let i = 0; i < members.length; i++) {
+
+        if (parties.length == 0 || parties.includes(members[i].party)) {
             template += addRow(i);
         }
     }
 
-    housedata.innerHTML = template;
+    houseData.innerHTML = template;
 }
 
 function addRow(i) {
@@ -83,4 +64,26 @@ function addRow(i) {
             <td>${members[i].votes_with_party_pct}</td>
             </tr>`
     return row;
+}
+
+function fillDropdown(members) {
+
+    let houseStates = document.getElementById('house-states');
+    let states = [];
+
+    for (let i = 0; i < members.length; i++) {
+        if (states.indexOf(members[i].state) < 0) {
+            states.push(members[i].state);
+        }
+    }
+
+    states.sort();
+    let stateDropdown = `<option>All States</option>`;
+
+    for (let i = 0; i < states.length; i++) {
+        stateDropdown += `
+        <option>${states[i]}</option>`
+    }
+
+    houseStates.innerHTML = stateDropdown;
 }
