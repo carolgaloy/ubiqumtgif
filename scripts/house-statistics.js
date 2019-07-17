@@ -49,19 +49,18 @@ function calculateStatistics(senateData) {
     });
 
     if (statistics.republicans.members != 0) {
-
         statistics.republicans.votes /= statistics.republicans.members;
     }
-    if (statistics.democrats.members != 0) {
 
+    if (statistics.democrats.members != 0) {
         statistics.democrats.votes /= statistics.democrats.members;
     }
-    if (statistics.independents.members != 0) {
 
+    if (statistics.independents.members != 0) {
         statistics.independents.votes /= statistics.independents.members;
     }
-    if (statistics.total.members != 0) {
 
+    if (statistics.total.members != 0) {
         statistics.total.votes /= statistics.total.members;
     }
 }
@@ -93,67 +92,41 @@ function attendance() {
     let mostEngaged = document.getElementById("house-most-engaged");
     let leastEngaged = document.getElementById("house-least-engaged");
 
-    let mostEngagedTable = "";
-    let leastEngagedTable = "";
+    let mostEngagedArray = [];
+    let leastEngagedArray = [];
 
     for (let i = 0; i < tenPercent; i++) {
-        mostEngagedTable += `
-        <tr>
-        <td><a href='${orderedMembers[i].url}'>${orderedMembers[i].last_name}, ${orderedMembers[i].first_name} ${orderedMembers[i].middle_name || ''}</a></td>
-        <td>${orderedMembers[i].missed_votes}</td>
-        <td>${orderedMembers[i].missed_votes_pct} %</td>
-        </tr>`;
+
+        leastEngagedArray.push(orderedMembers[i]);
     }
 
-    for (
-        let i = orderedMembers.length - 1; i > orderedMembers.length - 1 - tenPercent; i--
-    ) {
-        leastEngagedTable += `
-        <tr>
-        <td><a href='${orderedMembers[i].url}'>${orderedMembers[i].last_name}, ${orderedMembers[i].first_name} ${orderedMembers[i].middle_name || ''}</a></td>
-        <td>${orderedMembers[i].missed_votes}</td>
-        <td>${orderedMembers[i].missed_votes_pct} %</td>
-        </tr>`;
-    }
+    let cutPercentage = orderedMembers[tenPercent - 1].missed_votes_pct;
 
-    while (
-        orderedMembers[tenPercent - 1].missed_votes_pct ==
-        orderedMembers[tenPercent].missed_votes_pct
-    ) {
-        mostEngagedTable += `
-        <tr>
-        <td><a href='${orderedMembers[tenPercent].url}'>${orderedMembers[tenPercent].last_name}, ${orderedMembers[tenPercent].first_name} ${orderedMembers[tenPercent].middle_name || ''}</a></td>
-        <td>${orderedMembers[tenPercent].missed_votes}</td>
-        <td>${orderedMembers[tenPercent].missed_votes_pct} %</td>
-        </tr>`;
+    while (orderedMembers[tenPercent].missed_votes_pct == cutPercentage) {
 
+        leastEngagedArray.push(orderedMembers[tenPercent]);
         tenPercent++;
     }
 
-    while (
-        orderedMembers[orderedMembers.length - 1 - tenPercent].missed_votes_pct ==
-        orderedMembers[orderedMembers.length - tenPercent].missed_votes_pct
-    ) {
-        leastEngagedTable += `
-        <tr>
-        <td>${
-          orderedMembers[orderedMembers.length - 1 - tenPercent].first_name
-        }</td>
-        <td><a href='${orderedMembers[orderedMembers.length - 1 - tenPercent].url}'>${orderedMembers[orderedMembers.length - 1 - tenPercent].last_name}, ${orderedMembers[orderedMembers.length - 1 - tenPercent].first_name} ${orderedMembers[orderedMembers.length - 1 - tenPercent].middle_name || ''}</a></td>
-        <td>${
-          orderedMembers[orderedMembers.length - 1 - tenPercent].missed_votes
-        }</td>
-        <td>${
-          orderedMembers[orderedMembers.length - 1 - tenPercent]
-            .missed_votes_pct
-        } %</td>
-        </tr>`;
+    leastEngaged.innerHTML = printAttendanceTable(leastEngagedArray);
 
+    orderedMembers.reverse();
+    tenPercent = Math.round(members.length * pct);
+
+    for (let i = 0; i < tenPercent; i++) {
+
+        mostEngagedArray.push(orderedMembers[i]);
+    }
+
+    cutPercentage = orderedMembers[tenPercent - 1].missed_votes_pct;
+
+    while (orderedMembers[tenPercent].missed_votes_pct == cutPercentage) {
+
+        mostEngagedArray.push(orderedMembers[tenPercent]);
         tenPercent++;
     }
 
-    mostEngaged.innerHTML = mostEngagedTable;
-    leastEngaged.innerHTML = leastEngagedTable;
+    mostEngaged.innerHTML = printAttendanceTable(mostEngagedArray);
 }
 
 function loyalty() {
@@ -161,72 +134,80 @@ function loyalty() {
     let orderedMembers = members.sort(function (a, b) {
         return a.votes_with_party_pct - b.votes_with_party_pct;
     });
+
     let tenPercent = Math.round(members.length * pct);
 
     let mostLoyal = document.getElementById("house-most-loyal");
     let leastLoyal = document.getElementById("house-least-loyal");
 
-    let mostLoyalTable = "";
-    let leastLoyalTable = "";
+    let leastLoyalArray = [];
+    let mostLoyalArray = [];
 
     for (let i = 0; i < tenPercent; i++) {
-        leastLoyalTable += `
-        <tr>
-        <td><a href='${orderedMembers[i].url}'>${orderedMembers[i].last_name}, ${orderedMembers[i].first_name} ${orderedMembers[i].middle_name || ''}</a></td>
-        <td>${orderedMembers[i].total_votes}</td>
-        <td>${orderedMembers[i].votes_with_party_pct} %</td>
-        </tr>`;
+
+        leastLoyalArray.push(orderedMembers[i]);
     }
 
-    for (
-        let i = orderedMembers.length - 1; i > orderedMembers.length - 1 - tenPercent; i--
-    ) {
-        mostLoyalTable += `
-        <tr>
-        <td><a href='${orderedMembers[i].url}'>${orderedMembers[i].last_name}, ${orderedMembers[i].first_name} ${orderedMembers[i].middle_name || ''}</a></td>
-        <td>${orderedMembers[i].total_votes}</td>
-        <td>${orderedMembers[i].votes_with_party_pct} %</td>
-        </tr>`;
-    }
+    let cutPercentage = orderedMembers[tenPercent - 1].votes_with_party_pct;
 
-    while (
-        orderedMembers[tenPercent - 1].votes_with_party_pct ==
-        orderedMembers[tenPercent].votes_with_party_pct
-    ) {
-        leastLoyalTable += `
-        <tr>
-        <td>${orderedMembers[tenPercent].first_name}</td>
-        <td>${orderedMembers[tenPercent].total_votes}</td>
-        <td>${orderedMembers[tenPercent].votes_with_party_pct} %</td>
-        </tr>`;
+    while (orderedMembers[tenPercent].votes_with_party_pct == cutPercentage) {
 
+        leastLoyalArray.push(orderedMembers[tenPercent]);
         tenPercent++;
     }
 
+    leastLoyal.innerHTML = printLoyaltyTable(leastLoyalArray);
+
+    orderedMembers.reverse();
     tenPercent = Math.round(members.length * pct);
 
-    while (
-        orderedMembers[orderedMembers.length - 1 - tenPercent].missed_votes_pct ==
-        orderedMembers[orderedMembers.length - tenPercent].missed_votes_pct
-    ) {
-        mostLoyalTable += `
-        <tr>
-        <td>${
-          orderedMembers[orderedMembers.length - 1 - tenPercent].first_name
-        }</td>
-        <td>${
-          orderedMembers[orderedMembers.length - 1 - tenPercent].total_votes
-        }</td>
-        <td>${
-          orderedMembers[orderedMembers.length - 1 - tenPercent]
-            .votes_with_party_pct
-        } %</td>
-        </tr>`;
+    for (let i = 0; i < tenPercent; i++) {
 
+        mostLoyalArray.push(orderedMembers[i]);
+    }
+
+    cutPercentage = orderedMembers[tenPercent - 1].votes_with_party_pct;
+
+    while (orderedMembers[tenPercent].votes_with_party_pct == cutPercentage) {
+
+        mostLoyalArray.push(orderedMembers[tenPercent]);
         tenPercent++;
     }
 
-    mostLoyal.innerHTML = mostLoyalTable;
-    leastLoyal.innerHTML = leastLoyalTable;
+    mostLoyal.innerHTML = printLoyaltyTable(mostLoyalArray);
 
+}
+
+function printAttendanceTable(array) {
+
+    let template = '';
+
+    for (let i = 0; i < array.length; i++) {
+
+        template += `
+        <tr>
+        <td><a href='${members[i].url}'>${members[i].last_name}, ${members[i].first_name} ${members[i].middle_name || ''}</a></td>
+        <td>${members[i].missed_votes}</td>
+        <td>${members[i].missed_votes_pct}</td>
+        </tr>`
+    }
+
+    return template;
+}
+
+function printLoyaltyTable(array) {
+
+    let template = '';
+
+    for (let i = 0; i < array.length; i++) {
+
+        template += `
+        <tr>
+        <td><a href='${members[i].url}'>${members[i].last_name}, ${members[i].first_name} ${members[i].middle_name || ''}</a></td>
+        <td>${members[i].total_votes}</td>
+        <td>${members[i].votes_with_party_pct}</td>
+        </tr>`
+    }
+
+    return template;
 }

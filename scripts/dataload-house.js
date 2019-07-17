@@ -56,9 +56,8 @@ function createTable(houseData) {
 function filterByParty(houseData, parties) {
 
     let housedata = document.getElementById('house-data');
-
     let template = '';
-    console.log(parties);
+
     for (let i = 0; i < houseData.length; i++) {
 
         if (parties.length == 0) {
