@@ -89,6 +89,12 @@ function createTable(data) {
     </tr>`;
   }
 
+  if (data.length == 0) {
+    template += `<tr>
+    <td colspan=5>No data matching your search criteria</td>
+    </tr>`
+  }
+
   senatedata.innerHTML = template;
 }
 
@@ -107,13 +113,13 @@ function fillDropdown() {
   let statesId = document.getElementById('states');
   let states = Array.from(new Set(members.map(m => m.state).sort()));
 
-  let stateDropdown = `<option value="All">All States</option>`;
+  let stateDropdown = '';
 
   for (let i = 0; i < states.length; i++) {
     stateDropdown += `<option value="${states[i]}">${states[i]}</option>`;
   }
 
-  statesId.innerHTML = stateDropdown;
+  statesId.innerHTML += stateDropdown;
 }
 
 function calculateStatistics(data) {
@@ -171,7 +177,6 @@ function atAGlance() {
 
   statisticsId.innerHTML = statisticsTable;
 }
-
 
 
 
