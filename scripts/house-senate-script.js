@@ -2,10 +2,11 @@ let members;
 let URL;
 let pct = 0.1;
 
-let repCheckbox = document.getElementById('rep-checkbox');
-let demCheckbox = document.getElementById('dem-checkbox');
-let indCheckbox = document.getElementById('ind-checkbox');
-let stateDropdown = document.getElementById('states');
+let repCheckbox = document.getElementById("rep-checkbox");
+let demCheckbox = document.getElementById("dem-checkbox");
+let indCheckbox = document.getElementById("ind-checkbox");
+let stateDropdown = document.getElementById("states");
+let readMoreButton = document.getElementById("more-button");
 let parties = [];
 
 let statistics = {
@@ -27,61 +28,73 @@ let statistics = {
   }
 };
 
-if (document.URL.indexOf('senate') >= 0) {
-  URL = 'https://api.propublica.org/congress/v1/113/senate/members.json';
+if (document.URL.indexOf("senate") >= 0) {
+  URL = "https://api.propublica.org/congress/v1/113/senate/members.json";
 }
 
-if (document.URL.indexOf('house') >= 0) {
-  URL = 'https://api.propublica.org/congress/v1/113/house/members.json';
+if (document.URL.indexOf("house") >= 0) {
+  URL = "https://api.propublica.org/congress/v1/113/house/members.json";
 }
 
-fetch(URL, {
-  method: 'GET',
-  headers: {
-    'X-API-key': 'jd6SrdiFxFUh4Cw333Mbi2QSlHDnTxAcEB7tyHS1'
-  }
-}).then(function (response) {
-  if (response.ok) {
-    return response.json();
-  }
-}).then(function (json) {
-  members = json.results[0].members;
+if (document.URL.indexOf("index") < 0) {
+  fetch(URL, {
+    method: "GET",
+    headers: {
+      "X-API-key": "jd6SrdiFxFUh4Cw333Mbi2QSlHDnTxAcEB7tyHS1"
+    }
+  })
+    .then(function(response) {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .then(function(json) {
+      members = json.results[0].members;
 
-  if (document.URL.indexOf('/house.html') >= 0 || document.URL.indexOf('/senate.html') >= 0) {
-    createTable(members);
-    fillDropdown();
-  }
+      if (
+        document.URL.indexOf("/house.html") >= 0 ||
+        document.URL.indexOf("/senate.html") >= 0
+      ) {
+        createTable(members);
+        fillDropdown();
+      }
 
-  if (document.URL.indexOf('attendance') >= 0) {
-    calculateStatistics(members);
-    atAGlance();
-    attendance();
-  }
+      if (document.URL.indexOf("attendance") >= 0) {
+        calculateStatistics(members);
+        atAGlance();
+        attendance();
+      }
 
-  if (document.URL.indexOf('loyalty') >= 0) {
-    calculateStatistics(members);
-    atAGlance();
-    loyalty();
-  }
+      if (document.URL.indexOf("loyalty") >= 0) {
+        calculateStatistics(members);
+        atAGlance();
+        loyalty();
+      }
+    })
+    .catch(function(error) {
+      console.log("Request failed: " + error.message);
+    });
+}
 
-}).catch(function (error) {
-  console.log('Request failed: ' + error.message);
-});
-
-if (document.URL.indexOf('/house.html') >= 0 || document.URL.indexOf('/senate.html') >= 0) {
-  repCheckbox.addEventListener('click', filterMembers);
-  demCheckbox.addEventListener('click', filterMembers);
-  indCheckbox.addEventListener('click', filterMembers);
-  stateDropdown.addEventListener('change', filterMembers);
+if (
+  document.URL.indexOf("/house.html") >= 0 ||
+  document.URL.indexOf("/senate.html") >= 0
+) {
+  repCheckbox.addEventListener("click", filterMembers);
+  demCheckbox.addEventListener("click", filterMembers);
+  indCheckbox.addEventListener("click", filterMembers);
+  stateDropdown.addEventListener("change", filterMembers);
 }
 
 function createTable(data) {
-  let senatedata = document.getElementById('data');
-  let template = '';
+  let senatedata = document.getElementById("data");
+  let template = "";
 
   for (let i = 0; i < data.length; i++) {
     template += `<tr>
-    <td><a target="_blank" href='${data[i].url}'>${data[i].last_name}, ${data[i].first_name} ${data[i].middle_name || ''}</a></td>
+    <td><a target="_blank" href='${data[i].url}'>${data[i].last_name}, ${
+      data[i].first_name
+    } ${data[i].middle_name || ""}</a></td>
     <td>${data[i].party}</td>
     <td>${data[i].state}</td>
     <td>${data[i].seniority}</td>
@@ -92,28 +105,30 @@ function createTable(data) {
   if (data.length == 0) {
     template += `<tr>
     <td colspan=5>No data matching your search criteria</td>
-    </tr>`
+    </tr>`;
   }
 
   senatedata.innerHTML = template;
 }
 
 function filterMembers() {
-  let checkboxes = Array.from(document.querySelectorAll('input[type=checkbox]:checked')).map(c => c.value);
+  let checkboxes = Array.from(
+    document.querySelectorAll("input[type=checkbox]:checked")
+  ).map(c => c.value);
   let filteredMembers = members.filter(m => {
     let partyFilter = checkboxes.includes(m.party) || checkboxes.length == 0;
-    let stateFilter = stateDropdown.value == m.state || stateDropdown.value == 'All';
+    let stateFilter =
+      stateDropdown.value == m.state || stateDropdown.value == "All";
     return partyFilter && stateFilter;
   });
   createTable(filteredMembers);
 }
 
 function fillDropdown() {
-
-  let statesId = document.getElementById('states');
+  let statesId = document.getElementById("states");
   let states = Array.from(new Set(members.map(m => m.state).sort()));
 
-  let stateDropdown = '';
+  let stateDropdown = "";
 
   for (let i = 0; i < states.length; i++) {
     stateDropdown += `<option value="${states[i]}">${states[i]}</option>`;
@@ -157,13 +172,11 @@ function calculateStatistics(data) {
 }
 
 function atAGlance() {
-  let statisticsId = document.getElementById('statistics');
+  let statisticsId = document.getElementById("statistics");
   let statisticsTable = "";
 
   for (let party in statistics) {
-
     if (statistics[party].members != 0) {
-
       let partyCap = party.charAt(0).toUpperCase() + party.slice(1);
 
       statisticsTable += `
@@ -178,10 +191,8 @@ function atAGlance() {
   statisticsId.innerHTML = statisticsTable;
 }
 
-
-
 function attendance() {
-  let orderedMembers = members.sort(function (a, b) {
+  let orderedMembers = members.sort(function(a, b) {
     return a.missed_votes_pct - b.missed_votes_pct;
   });
   let tenPercent = Math.round(members.length * pct);
@@ -193,14 +204,12 @@ function attendance() {
   let leastEngagedArray = [];
 
   for (let i = 0; i < tenPercent; i++) {
-
     mostEngagedArray.push(orderedMembers[i]);
   }
 
   let cutPercentage = orderedMembers[tenPercent - 1].missed_votes_pct;
 
   while (orderedMembers[tenPercent].missed_votes_pct == cutPercentage) {
-
     mostEngagedArray.push(orderedMembers[tenPercent]);
     tenPercent++;
   }
@@ -211,14 +220,12 @@ function attendance() {
   tenPercent = Math.round(members.length * pct);
 
   for (let i = 0; i < tenPercent; i++) {
-
     leastEngagedArray.push(orderedMembers[i]);
   }
 
   cutPercentage = orderedMembers[tenPercent - 1].missed_votes_pct;
 
   while (orderedMembers[tenPercent].missed_votes_pct == cutPercentage) {
-
     leastEngagedArray.push(orderedMembers[tenPercent]);
     tenPercent++;
   }
@@ -227,8 +234,7 @@ function attendance() {
 }
 
 function loyalty() {
-
-  let orderedMembers = members.sort(function (a, b) {
+  let orderedMembers = members.sort(function(a, b) {
     return a.votes_with_party_pct - b.votes_with_party_pct;
   });
 
@@ -241,14 +247,12 @@ function loyalty() {
   let mostLoyalArray = [];
 
   for (let i = 0; i < tenPercent; i++) {
-
     leastLoyalArray.push(orderedMembers[i]);
   }
 
   let cutPercentage = orderedMembers[tenPercent - 1].votes_with_party_pct;
 
   while (orderedMembers[tenPercent].votes_with_party_pct == cutPercentage) {
-
     leastLoyalArray.push(orderedMembers[tenPercent]);
     tenPercent++;
   }
@@ -259,52 +263,66 @@ function loyalty() {
   tenPercent = Math.round(members.length * pct);
 
   for (let i = 0; i < tenPercent; i++) {
-
     mostLoyalArray.push(orderedMembers[i]);
   }
 
   cutPercentage = orderedMembers[tenPercent - 1].votes_with_party_pct;
 
   while (orderedMembers[tenPercent].votes_with_party_pct == cutPercentage) {
-
     mostLoyalArray.push(orderedMembers[tenPercent]);
     tenPercent++;
   }
 
   mostLoyal.innerHTML = printLoyaltyTable(mostLoyalArray);
-
 }
 
 function printAttendanceTable(array) {
-
-  let template = '';
+  let template = "";
 
   for (let i = 0; i < array.length; i++) {
-
     template += `
       <tr>
-      <td><a target="_blank" href='${members[i].url}'>${members[i].last_name}, ${members[i].first_name} ${members[i].middle_name || ''}</a></td>
+      <td><a target="_blank" href='${members[i].url}'>${
+      members[i].last_name
+    }, ${members[i].first_name} ${members[i].middle_name || ""}</a></td>
       <td>${members[i].missed_votes}</td>
       <td>${members[i].missed_votes_pct} %</td>
-      </tr>`
+      </tr>`;
   }
 
   return template;
 }
 
 function printLoyaltyTable(array) {
-
-  let template = '';
+  let template = "";
 
   for (let i = 0; i < array.length; i++) {
-
     template += `
       <tr>
-      <td><a target="_blank" href='${members[i].url}'>${members[i].last_name}, ${members[i].first_name} ${members[i].middle_name || ''}</a></td>
+      <td><a target="_blank" href='${members[i].url}'>${
+      members[i].last_name
+    }, ${members[i].first_name} ${members[i].middle_name || ""}</a></td>
       <td>${members[i].total_votes}</td>
       <td>${members[i].votes_with_party_pct} %</td>
-      </tr>`
+      </tr>`;
   }
 
   return template;
+}
+
+if (document.URL.indexOf("index") >= 0) {
+  readMoreButton.addEventListener("click", readMore);
+}
+
+function readMore() {
+  var moreText = document.getElementById("more-text");
+  var buttonMore = document.getElementById("more-button");
+
+  if (moreText.style.display === "none") {
+    buttonMore.innerHTML = "Read Less";
+    moreText.style.display = "inline";
+  } else {
+    buttonMore.innerHTML = "Read More";
+    moreText.style.display = "none";
+  }
 }
