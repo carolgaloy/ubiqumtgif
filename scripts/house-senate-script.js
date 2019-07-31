@@ -38,17 +38,17 @@ if (document.URL.indexOf("house") >= 0) {
 
 if (document.URL.indexOf("index") < 0) {
   fetch(URL, {
-    method: "GET",
-    headers: {
-      "X-API-key": "jd6SrdiFxFUh4Cw333Mbi2QSlHDnTxAcEB7tyHS1"
-    }
-  })
-    .then(function(response) {
+      method: "GET",
+      headers: {
+        "X-API-key": "jd6SrdiFxFUh4Cw333Mbi2QSlHDnTxAcEB7tyHS1"
+      }
+    })
+    .then(function (response) {
       if (response.ok) {
         return response.json();
       }
     })
-    .then(function(json) {
+    .then(function (json) {
       members = json.results[0].members;
 
       if (
@@ -71,7 +71,7 @@ if (document.URL.indexOf("index") < 0) {
         loyalty();
       }
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.log("Request failed: " + error.message);
     });
 }
@@ -192,7 +192,7 @@ function atAGlance() {
 }
 
 function attendance() {
-  let orderedMembers = members.sort(function(a, b) {
+  let orderedMembers = members.sort(function (a, b) {
     return a.missed_votes_pct - b.missed_votes_pct;
   });
   let tenPercent = Math.round(members.length * pct);
@@ -234,7 +234,7 @@ function attendance() {
 }
 
 function loyalty() {
-  let orderedMembers = members.sort(function(a, b) {
+  let orderedMembers = members.sort(function (a, b) {
     return a.votes_with_party_pct - b.votes_with_party_pct;
   });
 
@@ -318,11 +318,13 @@ function readMore() {
   var moreText = document.getElementById("more-text");
   var buttonMore = document.getElementById("more-button");
 
-  if (moreText.style.display === "none") {
+  if (buttonMore.value == "more") {
     buttonMore.innerHTML = "Read Less";
+    buttonMore.value = 'less';
     moreText.style.display = "inline";
   } else {
     buttonMore.innerHTML = "Read More";
+    buttonMore.value = 'more';
     moreText.style.display = "none";
   }
 }
