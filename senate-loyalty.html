@@ -53,71 +53,80 @@
     </div>
 
     <!--Table container-->
-    <div class='row'>
-        <div class='col-sm-6'>
-            <h2>Party Loyalty</h2>
-            <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans
-                respectively,
-                tend to be the most faithful in voting for their party's nominee for office and legislation that backs
-                their
-                party's agenda. </p>
+    <div>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <h2>Party Loyalty</h2>
+                <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans
+                    respectively,
+                    tend to be the most faithful in voting for their party's nominee for office and legislation that backs
+                    their
+                    party's agenda. </p>
+            </div>
+            <div class='col-sm-6'>
+                <h2>Senate at a glance</h2>
+                <table class="table table-hover">
+                    <thead class='thead-light'>
+                        <tr>
+                            <th>Party</th>
+                            <th>No. of Reps</th>
+                            <th>% Voted w/ Party</th>
+                        </tr>
+                    </thead>
+                    <tbody id="statistics">
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class='col-sm-6'>
-            <h2>Senate at a glance</h2>
-            <table class="table table-hover">
-                <thead class='thead-light'>
-                    <tr>
-                        <th>Party</th>
-                        <th>No. of Reps</th>
-                        <th>% Voted w/ Party</th>
-                    </tr>
-                </thead>
-                <tbody id="statistics">
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <hr>
+        <div class="row">
+            <div class="col-sm-12">
+                <hr>
+            </div>
         </div>
-    </div>
 
-    <div class='row'>
-        <div class='col-sm-6'>
-            <h2>Least Loyal (Bottom 10% of Party)</h2>
-            <table class='table table-hover'>
-                <thead class='thead-light' <tr>
-                    <th>Name</th>
-                    <th>No. Party Votes</th>
-                    <th>% Party Votes</th>
-                    </tr>
-                </thead>
-                <tbody id="least-loyal">
-
-                </tbody>
-            </table>
-        </div>
-        <div class='col-sm-6'>
-            <h2>Most Loyal (Top 10% of Party)</h2>
-            <table class='table table-hover'>
-                <thead class='thead-light'>
-                    <tr>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <h2>Least Loyal (Bottom 10% of Party)</h2>
+                <table class='table table-hover'>
+                    <thead class='thead-light'>
                         <th>Name</th>
                         <th>No. Party Votes</th>
                         <th>% Party Votes</th>
-                    </tr>
-                </thead>
-                <tbody id="most-loyal">
+                        </tr>
+                    </thead>
+                    <tbody id="least-loyal">
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
+            <div class='col-sm-6'>
+                <h2>Most Loyal (Top 10% of Party)</h2>
+                <table class='table table-hover'>
+                    <thead class='thead-light'>
+                        <tr>
+                            <th>Name</th>
+                            <th>No. Party Votes</th>
+                            <th>% Party Votes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="most-loyal">
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
+    <div class="container" id='loader'>
+        <div class="dash uno"></div>
+        <div class="dash dos"></div>
+        <div class="dash tres"></div>
+        <div class="dash cuatro"></div>
+      </div>
+
     <div class='row'>
-        <div class="col-sm-12 card-footer text-muted border text-center">
+        <div class="col-sm-12 card-footer border text-center footer">
             © TGIF 2016 | All rights Reserved
         </div>
     </div>

@@ -53,80 +53,90 @@
     </div>
 
     <!--Table container-->
-    <div class='row'>
-        <div class='col-sm-6'>
-            <h2>Attendance</h2>
-            <p>The Constitution specifies that a majority of members constitutes a quorum to do business in each house.
-                Representatives and senators rarely force the presence of a quorum by demanding quorum calls; thus, in
-                most
-                cases, debates continue even if a majority is not present.</p>
+    <div class='main'>
+        <div class='row'>
+            <div class='col-sm-6'>
+                <h2>Attendance</h2>
+                <p>The Constitution specifies that a majority of members constitutes a quorum to do business in each house.
+                    Representatives and senators rarely force the presence of a quorum by demanding quorum calls; thus, in
+                    most
+                    cases, debates continue even if a majority is not present.</p>
 
-            <p>The Senate uses roll-call votes; a clerk calls out the names of all the senators, each senator stating
-                "aye"
-                or "no" when his or her name is announced. The House reserves roll-call votes for the most formal
-                matters,
-                as a roll-call of all 435 representatives takes quite some time; normally, members vote by electronic
-                device. In the case of a tie, the motion in question fails. In the Senate, the Vice President may (if
-                present) cast the tiebreaking vote.</p>
+                <p>The Senate uses roll-call votes; a clerk calls out the names of all the senators, each senator stating
+                    "aye"
+                    or "no" when his or her name is announced. The House reserves roll-call votes for the most formal
+                    matters,
+                    as a roll-call of all 435 representatives takes quite some time; normally, members vote by electronic
+                    device. In the case of a tie, the motion in question fails. In the Senate, the Vice President may (if
+                    present) cast the tiebreaking vote.</p>
+            </div>
+            <div class='col-sm-6'>
+                <h2>Senate at a glance</h2>
+                <table class="table table-hover">
+                    <thead class='thead-light'>
+                        <tr>
+                            <th>Party</th>
+                            <th>No. of Reps</th>
+                            <th>% Voted w/ Party</th>
+                        </tr>
+                    </thead>
+                    <tbody id="statistics">
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class='col-sm-6'>
-            <h2>Senate at a glance</h2>
-            <table class="table table-hover">
-                <thead class='thead-light'>
-                    <tr>
-                        <th>Party</th>
-                        <th>No. of Reps</th>
-                        <th>% Voted w/ Party</th>
-                    </tr>
-                </thead>
-                <tbody id="statistics">
-                </tbody>
-            </table>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <hr>
+            </div>
         </div>
+
+        <div class='row'>
+            <div class='col-sm-6'>
+                <h2>Least Engaged (Bottom 10% Attendance)</h2>
+                <table class="table table-hover">
+                    <thead class='thead-light'>
+                        <tr>
+                            <th>Name</th>
+                            <th>No. of Missed Votes</th>
+                            <th>% Missed</th>
+                        </tr>
+                    </thead>
+                    <tbody id="least-engaged">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class='col-sm-6'>
+                <h2>Most Engaged (Top 10% Attendance)</h2>
+                <table class="table table-hover">
+                    <thead class='thead-light'>
+                        <tr>
+                            <th>Name</th>
+                            <th>No. of Missed Votes</th>
+                            <th>% Missed</th>
+                        </tr>
+                    </thead>
+                    <tbody id="most-engaged">
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <hr>
-        </div>
-    </div>
+    <div class="container" id='loader'>
+        <div class="dash uno"></div>
+        <div class="dash dos"></div>
+        <div class="dash tres"></div>
+        <div class="dash cuatro"></div>
+      </div>
 
     <div class='row'>
-        <div class='col-sm-6'>
-            <h2>Least Engaged (Bottom 10% Attendance)</h2>
-            <table class="table table-hover">
-                <thead class='thead-light'>
-                    <tr>
-                        <th>Name</th>
-                        <th>No. of Missed Votes</th>
-                        <th>% Missed</th>
-                    </tr>
-                </thead>
-                <tbody id="least-engaged">
-
-                </tbody>
-            </table>
-        </div>
-        <div class='col-sm-6'>
-            <h2>Most Engaged (Top 10% Attendance)</h2>
-            <table class="table table-hover">
-                <thead class='thead-light'>
-                    <tr>
-                        <th>Name</th>
-                        <th>No. of Missed Votes</th>
-                        <th>% Missed</th>
-                    </tr>
-                </thead>
-                <tbody id="most-engaged">
-
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-
-    <div class='row'>
-        <div class="col-sm-12 card-footer text-muted border text-center">
+        <div class="col-sm-12 card-footer border text-center footer">
             © TGIF 2016 | All rights Reserved
         </div>
     </div>

@@ -54,7 +54,7 @@
   </div>
 
   <!--Table container-->
-  <div>
+  <div class='main'>
     <h2>Congressmen</h2>
     <p>The major power of the House is to pass federal legislation that affects the entire country, although its bills
       must also be passed by the Senate and further agreed to by the U.S. President before becoming law (unless both the
@@ -83,7 +83,7 @@
       <table class='table table-hover'>
         <thead class='thead-light'>
           <tr>
-            <th>Name</th>
+            <th class='fixed-width'>Name</th>
             <th>Party</th>
             <th>State</th>
             <th>Years in Office</th>
@@ -95,8 +95,15 @@
       </table>
     </div>
 
+    <div class="container" id='loader'>
+      <div class="dash uno"></div>
+      <div class="dash dos"></div>
+      <div class="dash tres"></div>
+      <div class="dash cuatro"></div>
+    </div>
+
     <div class='row'>
-      <div class="col-sm-12 card-footer text-muted border text-center">
+      <div class="col-sm-12 card-footer border text-center footer">
         © TGIF 2016 | All rights Reserved
       </div>
     </div>

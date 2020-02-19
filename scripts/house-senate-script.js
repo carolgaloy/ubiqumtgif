@@ -36,7 +36,7 @@ if (document.URL.indexOf("house") >= 0) {
   URL = "https://api.propublica.org/congress/v1/113/house/members.json";
 }
 
-if (document.URL.indexOf("index") < 0) {
+if (URL) {
   fetch(URL, {
       method: "GET",
       headers: {
@@ -50,6 +50,7 @@ if (document.URL.indexOf("index") < 0) {
     })
     .then(function (json) {
       members = json.results[0].members;
+      document.getElementById('loader').style.display = 'none';
 
       if (
         document.URL.indexOf("/house.html") >= 0 ||
@@ -70,6 +71,13 @@ if (document.URL.indexOf("index") < 0) {
         atAGlance();
         loyalty();
       }
+
+      if(URL.includes('house')) {
+        localStorage.setItem('houseMembers', JSON.stringify(members));
+      } else {
+        localStorage.setItem('senateMembers', JSON.stringify(members));
+      }
+
     })
     .catch(function (error) {
       console.log("Request failed: " + error.message);
@@ -103,7 +111,7 @@ function createTable(data) {
   }
 
   if (data.length == 0) {
-    template += `<tr>
+    template += `<tr class='no-data'>
     <td colspan=5>No data matching your search criteria</td>
     </tr>`;
   }
@@ -310,7 +318,7 @@ function printLoyaltyTable(array) {
   return template;
 }
 
-if (document.URL.indexOf("index") >= 0) {
+if (!URL) {
   readMoreButton.addEventListener("click", readMore);
 }
 
@@ -318,13 +326,11 @@ function readMore() {
   var moreText = document.getElementById("more-text");
   var buttonMore = document.getElementById("more-button");
 
-  if (buttonMore.value == "more") {
+  if (buttonMore.innerHTML == "Read More") {
     buttonMore.innerHTML = "Read Less";
-    buttonMore.value = 'less';
-    moreText.style.display = "inline";
+    moreText.style.display = "block";
   } else {
     buttonMore.innerHTML = "Read More";
-    buttonMore.value = 'more';
     moreText.style.display = "none";
   }
 }
